@@ -1,0 +1,65 @@
+﻿@model QuillDemo.Models.Document
+
+@section Meta {
+    <link href="~/lib/quill/quill.snow.css" rel="stylesheet" />
+}
+
+<form asp-action="Edit">
+
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="DeltaJson" id="delta-input" />
+
+    <div id="editor">
+    </div>
+
+    <noscript>You must have Javascript enabled to see the editor.</noscript>
+
+    <div class="my-4"></div>
+
+    <input type="submit" value="Save" class="btn btn-primary" />
+    
+</form>
+
+
+
+@section Scripts {
+    <script src="~/lib/quill/quill.js"></script>
+
+    <script>
+
+        const toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],  // toggled buttons
+            ['link', 'image'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+            ['clean']                                         // remove formatting button
+        ];
+
+        const quill = new Quill("#editor", {
+            theme: "snow",
+            modules: {
+                toolbar: toolbarOptions
+            }
+        });
+
+        // get the current ops array from the db
+        let opsString = document.getElementById("delta-input").value // string
+        let ops = JSON.parse(opsString)
+        console.log(ops);
+
+        // set the delta
+        quill.setContents(ops);
+
+        const deltaInput = document.getElementById("delta-input");
+
+        quill.on("text-change", () => deltaInput.value = JSON.stringify(quill.getContents()?.ops));
+    </script>
+}

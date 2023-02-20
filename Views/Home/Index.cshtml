@@ -1,0 +1,21 @@
+﻿@model String
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Meta {
+    <link rel="stylesheet" href="~/lib/quill/quill.snow.css" />
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<br />
+
+<div class="ql-editor">
+    @Html.Raw(ViewBag.DeltaHtml.Replace("\\n", "\n"))
+</div>
