@@ -35,6 +35,8 @@ namespace QuillDemo.Controllers
 
             sanitizer.AllowedAttributes.Add("class"); // to preserve the classes used to style quill delta as html
 
+            sanitizer.AllowedSchemes.Add("data"); // support for quill-added images embedded as base64
+
             var safeHtml = sanitizer.Sanitize(html);
 
             ViewBag.DeltaHtml = safeHtml;
